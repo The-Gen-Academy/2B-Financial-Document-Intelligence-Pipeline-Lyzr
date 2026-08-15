@@ -1,0 +1,26 @@
+Evaluation Query Set — Financial Document Intelligence Pipeline
+Source documents: Apple Inc. 10-K filings, FY2024 (period ending 2024-09-28) and FY2025 (period ending 2025-09-27)
+Format: one question per line. Each question has a verifiable answer in the source filings.
+
+1. What was Apple's total net sales for fiscal year 2024?
+2. What was Apple's total net sales for fiscal year 2025?
+3. What was Apple's net income in fiscal year 2024?
+4. What was Apple's diluted earnings per share for fiscal year 2025?
+5. How much did Apple spend on research and development in fiscal year 2024?
+6. What was Apple's iPhone segment net sales in fiscal year 2024?
+7. What was Apple's Services segment net sales in fiscal year 2024?
+8. What was Apple's gross margin percentage in fiscal year 2024?
+9. What was Apple's total net sales for the Mac product line in fiscal year 2024?
+10. What was Apple's total net sales for the Wearables, Home and Accessories category in fiscal year 2024?
+11. How did Apple's total net sales change between fiscal year 2023 and fiscal year 2024?
+12. What was Apple's total net sales for fiscal year 2023 (as reported in the FY2024 filing's comparative table)?
+13. What operating expenses did Apple report in fiscal year 2024?
+14. What was Apple's cash and cash equivalents position at the end of fiscal year 2024?
+15. What risk factors did Apple disclose related to supply chain in the FY2024 filing?
+
+Notes:
+- Questions 1–10 have single, verifiable numeric answers directly extractable from the filings.
+- Questions 11–12 test cross-reference / comparative retrieval across two years in the same table.
+- Question 13–14 test retrieval from financial statement sections beyond the top-line revenue table.
+- Question 15 tests retrieval from narrative (non-tabular) risk-factor text, as a contrast case to the numeric questions above.
+- Only questions 1 and (partially) 6 were run to completion against both apple_10k_fixed and apple_semantic during this build; the remaining questions are provided as the intended full evaluation set for future completion (see Readme.md, Future Work).

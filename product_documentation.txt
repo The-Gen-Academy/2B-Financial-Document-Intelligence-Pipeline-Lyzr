@@ -1,0 +1,61 @@
+Product Documentation Notes — Lyzr AI Studio
+(Compiled from direct testing during this project's build, not from marketing copy)
+
+WHAT LYZR PROVIDES
+
+Knowledge Base
+- Create via Studio UI: Knowledge Base -> Create New
+- KB types: Basic (vector-based retrieval), Graph (knowledge graph / entity relationships),
+  Semantic Data Model (schema-aware retrieval with database integration — for structured/
+  relational data, NOT for semantic text chunking; a naming trap worth flagging for future
+  cohorts, since "semantic" in the name does not mean "semantic chunking")
+- Vector store options: Qdrant [Lyzr 2] and others
+- Embedding model options: text-embedding-ada-002 and others
+- Chunking: internal and NOT user-configurable. No chunk size, overlap, or strategy field
+  exists anywhere in the KB creation flow, file upload flow, Configure panel, or the
+  Knowledge Base API's JSON response.
+- File upload limit: 5 files per batch (observed directly in the Add Source UI)
+
+Retrieval
+- Retrieval types exposed in the Configure panel: Basic, MMR, HyDE
+- Configurable: Number of chunks (top-k), Score threshold
+- No dedicated reranker toggle found anywhere in the product
+
+Knowledge Base API
+- Two tabs observed: "Inference" and "JSON Config"
+- Inference tab: GET https://rag-prod.studio.lyzr.ai/v3/rag/{kb_id}/retrieve/
+  Query params: query, top_k, retrieval_type, score_threshold
+  Auth: x-api-key header
+- JSON Config tab: static KB settings object (id, embedding model, vector store, etc.) —
+  not an API endpoint, just a config readout
+- No POST/ingestion endpoint was found through either tab. This means programmatic
+  document upload (as opposed to manual file upload through the Studio UI) is not
+  confirmed to be possible via a public API.
+
+Agent Studio
+- Create agents with Role / Goal / Instructions, attach one or more Knowledge Bases
+- Multi-KB retrieval modes when attaching Knowledge: Basic (single KB), One Shot
+  (planner LLM picks relevant KB(s)), Agentic (ReAct loop over multiple KBs)
+- Agent API: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+  Body: user_id, agent_id, session_id, message
+  Auth: x-api-key header
+- Optional Features: Memory (contextual conversation memory), Data Query, Responsible AI
+
+SuperFlow (visual workflow builder)
+- Node categories: AI (AI Agent, A2A Agent, AI Swarm, Tool, LLM), Safety (Guardrails),
+  Control Flow (Trigger, If, Switch, Merge, Filter, Loop, Wait, Wait for Approval,
+  Stop & Error, No-Op), Data Transform (Set, Aggregate, Sort, Limit, Remove Duplicates,
+  Rename Keys, TOON), I/O (Code, HTTP Request, Execute SuperFlow), Utility (Date/Time,
+  Crypto), Document (Parse Document)
+- Trigger sources: Webhook, Schedule, File Upload (no plain "manual text" trigger source
+  was found; File Upload requires a file even when only a text message input is needed)
+- Parse Document node: OCR toggle, DPI, Chunk Size, Chunk Overlap, Timeout — this is a
+  genuinely configurable chunking control, but it lives in SuperFlow's document-parsing
+  node, separate from the Knowledge Base's own (non-configurable) internal chunking
+
+LIMITATIONS CONFIRMED DURING THIS BUILD
+1. No configurable chunk size/overlap at the Knowledge Base level (only inside the
+   SuperFlow Parse Document node, which is a separate mechanism)
+2. No dedicated reranker toggle anywhere in the product
+3. No confirmed document-ingestion API endpoint (only retrieval/GET is confirmed)
+4. File upload capped at 5 files per batch through the Studio UI

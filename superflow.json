@@ -1,0 +1,78 @@
+{
+  "name": "Financial Document Intelligence ",
+  "nodes": [
+    {
+      "id": "node_0",
+      "name": "Trigger",
+      "type": "lyzr-nodes-base.trigger",
+      "parameters": {
+        "inputSchema": [
+          {
+            "name": "question",
+            "type": "string",
+            "required": false,
+            "description": "Financial intelligence question to answer using the filing."
+          }
+        ],
+        "triggerSource": "file_upload"
+      },
+      "position": [
+        110.65130835860737,
+        151.58697010035385
+      ]
+    },
+    {
+      "id": "f0aced69-506f-416f-adb4-c164a92f0993",
+      "name": "Financial Agent",
+      "type": "lyzr-nodes-base.lyzr.agent",
+      "parameters": {
+        "model": "gpt-4o",
+        "agent_id": "6a7bfa3eb51f4c3b28f96c13",
+        "provider": "openai",
+        "maxTokens": 4096,
+        "agent_name": "Agent1",
+        "temperature": 0.7,
+        "systemPrompt": "You are a helpful assistant.",
+        "maxIterations": 25
+      },
+      "position": [
+        298.5877698573053,
+        152.36643293133227
+      ]
+    },
+    {
+      "id": "d7291665-68ee-4307-bb06-388633c331fc",
+      "name": "No-Op",
+      "type": "lyzr-nodes-base.noOp",
+      "parameters": {},
+      "position": [
+        483.61672134043283,
+        164.47569958658636
+      ]
+    }
+  ],
+  "connections": {
+    "Trigger": {
+      "main": [
+        [
+          {
+            "node": "Financial Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Financial Agent": {
+      "main": [
+        [
+          {
+            "node": "No-Op",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
